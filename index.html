@@ -1,1 +1,899 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
+  <title>Schwander Legal | Delaware Mobile Closing Coverage Attorney</title>
+
+  <meta
+    name="description"
+    content="Schwander Legal provides independent per-file mobile closing coverage for Delaware real estate firms, settlement attorneys, and title-law practices needing reliable overflow, travel-heavy, evening, or short-notice attorney support."
+  />
+
+  <meta name="theme-color" content="#0b1f3a" />
+
+  <style>
+    :root {
+      --navy: #0b1f3a;
+      --navy-soft: #14375f;
+      --gold: #c8a24a;
+      --ivory: #f8f5ee;
+      --white: #ffffff;
+      --gray: #5f6875;
+      --light-gray: #e8e4da;
+      --text: #172033;
+      --max-width: 1120px;
+      --radius: 18px;
+      --shadow: 0 20px 50px rgba(11, 31, 58, 0.12);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+      background: var(--ivory);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .container {
+      width: min(92%, var(--max-width));
+      margin: 0 auto;
+    }
+
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(248, 245, 238, 0.94);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid rgba(11, 31, 58, 0.08);
+    }
+
+    .nav {
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+
+    .brand {
+      display: flex;
+      flex-direction: column;
+      line-height: 1.1;
+    }
+
+    .brand strong {
+      font-family: Georgia, "Times New Roman", serif;
+      font-size: 1.35rem;
+      color: var(--navy);
+      letter-spacing: -0.02em;
+    }
+
+    .brand span {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      color: var(--gold);
+      font-weight: 700;
+      margin-top: 4px;
+    }
+
+    nav ul {
+      list-style: none;
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      font-size: 0.95rem;
+      color: var(--navy);
+      font-weight: 600;
+    }
+
+    .nav-cta {
+      padding: 10px 16px;
+      border: 1px solid var(--gold);
+      border-radius: 999px;
+      color: var(--navy);
+      background: rgba(200, 162, 74, 0.12);
+    }
+
+    .hero {
+      position: relative;
+      padding: 96px 0 72px;
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      top: -160px;
+      right: -140px;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: rgba(200, 162, 74, 0.16);
+      z-index: -1;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap: 44px;
+      align-items: center;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 7px 12px;
+      border: 1px solid rgba(200, 162, 74, 0.5);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.6);
+      color: var(--navy);
+      font-size: 0.82rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin-bottom: 22px;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 8px;
+      height: 8px;
+      background: var(--gold);
+      border-radius: 50%;
+    }
+
+    h1, h2, h3 {
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--navy);
+      line-height: 1.08;
+    }
+
+    h1 {
+      font-size: clamp(2.55rem, 6vw, 5rem);
+      letter-spacing: -0.05em;
+      margin-bottom: 22px;
+    }
+
+    .hero p {
+      font-size: 1.18rem;
+      max-width: 660px;
+      color: var(--gray);
+      margin-bottom: 28px;
+    }
+
+    .tagline {
+      font-family: Georgia, "Times New Roman", serif;
+      color: var(--navy);
+      font-size: clamp(1.35rem, 3vw, 2rem);
+      line-height: 1.2;
+      margin: 30px 0;
+      padding-left: 20px;
+      border-left: 4px solid var(--gold);
+    }
+
+    .buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 20px;
+      border-radius: 999px;
+      font-weight: 800;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+    }
+
+    .btn-primary {
+      background: var(--navy);
+      color: var(--white);
+      box-shadow: 0 14px 30px rgba(11, 31, 58, 0.22);
+    }
+
+    .btn-secondary {
+      background: var(--white);
+      color: var(--navy);
+      border: 1px solid var(--light-gray);
+    }
+
+    .hero-card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 30px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(11, 31, 58, 0.08);
+    }
+
+    .hero-card h3 {
+      font-size: 1.55rem;
+      margin-bottom: 16px;
+    }
+
+    .check-list {
+      display: grid;
+      gap: 13px;
+      list-style: none;
+      margin-top: 18px;
+    }
+
+    .check-list li {
+      display: flex;
+      gap: 11px;
+      color: var(--gray);
+    }
+
+    .check-list li::before {
+      content: "✓";
+      color: var(--gold);
+      font-weight: 900;
+      flex: 0 0 auto;
+    }
+
+    section {
+      padding: 72px 0;
+    }
+
+    .section-heading {
+      max-width: 760px;
+      margin-bottom: 34px;
+    }
+
+    .section-heading span {
+      display: block;
+      color: var(--gold);
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-weight: 800;
+      font-size: 0.8rem;
+      margin-bottom: 12px;
+    }
+
+    .section-heading h2 {
+      font-size: clamp(2rem, 4vw, 3.1rem);
+      letter-spacing: -0.035em;
+      margin-bottom: 16px;
+    }
+
+    .section-heading p {
+      color: var(--gray);
+      font-size: 1.08rem;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .card {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 26px;
+      box-shadow: 0 12px 35px rgba(11, 31, 58, 0.08);
+      border: 1px solid rgba(11, 31, 58, 0.07);
+    }
+
+    .card h3 {
+      font-size: 1.35rem;
+      margin-bottom: 10px;
+    }
+
+    .card p {
+      color: var(--gray);
+    }
+
+    .dark {
+      background: var(--navy);
+      color: var(--white);
+    }
+
+    .dark h2,
+    .dark h3 {
+      color: var(--white);
+    }
+
+    .dark .section-heading p,
+    .dark .card p {
+      color: rgba(255, 255, 255, 0.72);
+    }
+
+    .dark .card {
+      background: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      box-shadow: none;
+    }
+
+    .process {
+      display: grid;
+      gap: 18px;
+      counter-reset: step;
+    }
+
+    .process-item {
+      display: grid;
+      grid-template-columns: 70px 1fr;
+      gap: 20px;
+      align-items: start;
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 24px;
+      border: 1px solid rgba(11, 31, 58, 0.08);
+    }
+
+    .process-item::before {
+      counter-increment: step;
+      content: counter(step);
+      width: 52px;
+      height: 52px;
+      border-radius: 50%;
+      background: var(--navy);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+      font-size: 1.15rem;
+      box-shadow: 0 10px 25px rgba(11, 31, 58, 0.18);
+    }
+
+    .process-item h3 {
+      margin-bottom: 6px;
+      font-size: 1.28rem;
+    }
+
+    .process-item p {
+      color: var(--gray);
+    }
+
+    .split {
+      display: grid;
+      grid-template-columns: 0.9fr 1.1fr;
+      gap: 36px;
+      align-items: start;
+    }
+
+    .about-box {
+      background: var(--white);
+      border-radius: var(--radius);
+      padding: 32px;
+      box-shadow: var(--shadow);
+      border: 1px solid rgba(11, 31, 58, 0.08);
+    }
+
+    .about-box p {
+      color: var(--gray);
+      margin-bottom: 16px;
+    }
+
+    .scope-box {
+      background: rgba(200, 162, 74, 0.12);
+      border: 1px solid rgba(200, 162, 74, 0.35);
+      border-radius: var(--radius);
+      padding: 26px;
+    }
+
+    .scope-box strong {
+      color: var(--navy);
+    }
+
+    .scope-box p {
+      color: var(--gray);
+      margin-top: 10px;
+    }
+
+    .contact {
+      background: linear-gradient(135deg, var(--navy), var(--navy-soft));
+      color: var(--white);
+      border-radius: 28px;
+      padding: 46px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 34px;
+      align-items: center;
+    }
+
+    .contact h2 {
+      color: var(--white);
+      font-size: clamp(2rem, 4vw, 3rem);
+      margin-bottom: 16px;
+    }
+
+    .contact p {
+      color: rgba(255, 255, 255, 0.78);
+      margin-bottom: 20px;
+    }
+
+    .contact-details {
+      display: grid;
+      gap: 12px;
+      font-weight: 700;
+    }
+
+    form {
+      background: var(--white);
+      color: var(--text);
+      padding: 24px;
+      border-radius: var(--radius);
+      display: grid;
+      gap: 12px;
+    }
+
+    label {
+      font-weight: 800;
+      color: var(--navy);
+      font-size: 0.86rem;
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      padding: 12px 13px;
+      border-radius: 10px;
+      border: 1px solid var(--light-gray);
+      font: inherit;
+      background: #fff;
+      color: var(--text);
+    }
+
+    textarea {
+      min-height: 110px;
+      resize: vertical;
+    }
+
+    .form-note {
+      color: var(--gray);
+      font-size: 0.86rem;
+      line-height: 1.45;
+    }
+
+    footer {
+      padding: 34px 0;
+      color: var(--gray);
+      font-size: 0.88rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      gap: 16px;
+      border-top: 1px solid rgba(11, 31, 58, 0.12);
+      padding-top: 24px;
+    }
+
+    .disclaimer {
+      font-size: 0.8rem;
+      color: #6f7783;
+    }
+
+    @media (max-width: 860px) {
+      nav ul {
+        display: none;
+      }
+
+      .hero {
+        padding: 70px 0 50px;
+      }
+
+      .hero-grid,
+      .split,
+      .contact {
+        grid-template-columns: 1fr;
+      }
+
+      .cards {
+        grid-template-columns: 1fr;
+      }
+
+      .process-item {
+        grid-template-columns: 1fr;
+      }
+
+      .contact {
+        padding: 32px 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header>
+    <div class="container nav">
+      <a href="#top" class="brand" aria-label="Schwander Legal Home">
+        <strong>Schwander Legal</strong>
+        <span>Delaware Attorney Coverage</span>
+      </a>
+
+      <nav aria-label="Primary navigation">
+        <ul>
+          <li><a href="#services">Services</a></li>
+          <li><a href="#process">How It Works</a></li>
+          <li><a href="#scope">Scope</a></li>
+          <li><a href="#about">About</a></li>
+          <li><a class="nav-cta" href="#contact">Request Coverage</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="top">
+    <section class="hero">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow">Schwander Legal Services, P.A. — Formation Pending</div>
+
+          <h1>Delaware attorney closing coverage when timing matters.</h1>
+
+          <p>
+            Reliable, independent, per-file mobile closing support for Delaware real estate firms,
+            settlement attorneys, and title-law practices that need overflow, travel-heavy,
+            evening, or short-notice attorney coverage.
+          </p>
+
+          <div class="tagline">
+            When your schedule breaks, your closing does not have to.
+          </div>
+
+          <div class="buttons">
+            <a class="btn btn-primary" href="#contact">Request Closing Coverage</a>
+            <a class="btn btn-secondary" href="#services">View Services</a>
+          </div>
+        </div>
+
+        <aside class="hero-card" aria-label="Service summary">
+          <h3>Built for the last-mile closing problem.</h3>
+          <p>
+            Schwander Legal is designed to help firms keep files moving without adding another
+            full-time employee.
+          </p>
+
+          <ul class="check-list">
+            <li>Mobile borrower and seller signings</li>
+            <li>Refinance and purchase package execution</li>
+            <li>Overflow, evening, weekend, and rush coverage</li>
+            <li>New Castle, Kent, and Sussex County availability</li>
+            <li>Delaware and Pennsylvania licensed attorney</li>
+          </ul>
+        </aside>
+      </div>
+    </section>
+
+    <section id="services">
+      <div class="container">
+        <div class="section-heading">
+          <span>Services</span>
+          <h2>Attorney coverage for files your office already has under control.</h2>
+          <p>
+            Schwander Legal helps with the practical logistics of getting residential closing
+            documents executed professionally, promptly, and with attorney presence where needed.
+          </p>
+        </div>
+
+        <div class="cards">
+          <article class="card">
+            <h3>Mobile Closing Coverage</h3>
+            <p>
+              On-site borrower or seller appointments for residential purchase, refinance, and
+              related signing packages.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Overflow & Conflict Support</h3>
+            <p>
+              Per-file support when your office is stacked, a partner has a conflict, or a file
+              needs to close without disrupting the rest of the calendar.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Travel-Heavy Files</h3>
+            <p>
+              County-to-county coverage for inconvenient locations, evening appointments,
+              after-hours needs, and short-notice scheduling problems.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="dark">
+      <div class="container">
+        <div class="section-heading">
+          <span>Why Firms Call</span>
+          <h2>A practical solution for Delaware’s real-world closing calendar.</h2>
+          <p>
+            A closing is ready, but the schedule is not. Schwander Legal gives firms a flexible
+            attorney coverage option when logistics become the problem.
+          </p>
+        </div>
+
+        <div class="cards">
+          <article class="card">
+            <h3>Last-Minute Conflicts</h3>
+            <p>
+              A hearing, family commitment, staff shortage, or travel issue should not derail a
+              file that is otherwise ready to execute.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>End-of-Month Volume</h3>
+            <p>
+              When the calendar stacks up, per-file attorney support can help keep closings moving
+              without creating long-term payroll obligations.
+            </p>
+          </article>
+
+          <article class="card">
+            <h3>Client Convenience</h3>
+            <p>
+              Evening, mobile, or location-specific appointments can help firms serve clients
+              without pulling internal attorneys away from the office.
+            </p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section id="process">
+      <div class="container">
+        <div class="section-heading">
+          <span>How It Works</span>
+          <h2>Simple, file-by-file coverage.</h2>
+          <p>
+            The goal is to make coverage easy to request, easy to scope, and easy to complete.
+          </p>
+        </div>
+
+        <div class="process">
+          <div class="process-item">
+            <div>
+              <h3>Send the request.</h3>
+              <p>
+                Share the county/location, preferred signing time, file type, package status,
+                printing requirements, scanback needs, and deadline.
+              </p>
+            </div>
+          </div>
+
+          <div class="process-item">
+            <div>
+              <h3>Confirm scope and availability.</h3>
+              <p>
+                Schwander Legal confirms whether the file fits the limited coverage model,
+                whether the timing works, and what fee applies based on travel, urgency, and logistics.
+              </p>
+            </div>
+          </div>
+
+          <div class="process-item">
+            <div>
+              <h3>Execute the appointment.</h3>
+              <p>
+                The package is reviewed for execution logistics, the appointment is handled
+                professionally, signatures are completed, and required scanbacks or package return
+                steps are performed.
+              </p>
+            </div>
+          </div>
+
+          <div class="process-item">
+            <div>
+              <h3>Close the loop.</h3>
+              <p>
+                Your office receives completion confirmation, notes regarding any issues, and
+                returned documents according to your file instructions.
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section id="scope">
+      <div class="container split">
+        <div class="section-heading">
+          <span>Compliance-Focused Scope</span>
+          <h2>Not witness-only. Not a title company. Attorney coverage.</h2>
+          <p>
+            Schwander Legal is built around a focused, limited-scope model for firms that already
+            maintain compliant file, title, escrow, and settlement processes.
+          </p>
+        </div>
+
+        <div class="scope-box">
+          <strong>Initial service model:</strong>
+          <p>
+            Limited-scope mobile closing coverage and document execution support for files assigned
+            by Delaware real estate law firms, settlement attorneys, and title-law practices.
+          </p>
+
+          <p>
+            Unless expressly agreed in writing, Schwander Legal does not open title, issue title
+            insurance, hold settlement funds, disburse funds, record documents, clear title defects,
+            or serve as primary settlement counsel.
+          </p>
+
+          <p>
+            The purpose is to support compliant files — not to replace the assigning firm’s role,
+            settlement process, or professional responsibility.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="about">
+      <div class="container split">
+        <div class="about-box">
+          <h2>About Michael Schwander</h2>
+          <p>
+            Michael Schwander is a Delaware and Pennsylvania licensed attorney with prior hands-on
+            experience handling mobile residential real estate closings for a Delaware law firm.
+          </p>
+
+          <p>
+            His background includes reviewing closing files, preparing document packages, traveling
+            to borrowers, managing execution, and returning completed packages for post-closing
+            processing.
+          </p>
+
+          <p>
+            Schwander Legal was created around a focused idea: give Delaware real estate firms a
+            reliable, independent, per-file attorney coverage option when they need another set of
+            hands without adding another full-time employee.
+          </p>
+        </div>
+
+        <div class="section-heading">
+          <span>Coverage Area</span>
+          <h2>Available throughout Delaware by appointment.</h2>
+          <p>
+            Coverage may be available in New Castle, Kent, and Sussex County depending on timing,
+            location, document readiness, printing/scanning needs, and file scope.
+          </p>
+
+          <p>
+            Pennsylvania coverage may also be available for appropriate matters.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section id="contact">
+      <div class="container">
+        <div class="contact">
+          <div>
+            <h2>Need closing coverage?</h2>
+            <p>
+              Send the file logistics, preferred appointment time, and coverage location. If the
+              request fits the service model, availability and fee can be confirmed quickly.
+            </p>
+
+            <div class="contact-details">
+              <div>Schwander Legal</div>
+              <div>Delaware & Pennsylvania Licensed Attorney</div>
+              <div>SchwanderLegal.com</div>
+            </div>
+          </div>
+
+          <!--
+            GitHub Pages does not process forms by itself.
+            To make this live, connect it later to Formspree, Basin, Netlify Forms,
+            Google Forms, or a custom backend.
+          -->
+          <form action="mailto:YOUR-EMAIL-HERE" method="post" enctype="text/plain">
+            <div>
+              <label for="name">Name</label>
+              <input id="name" name="name" type="text" required />
+            </div>
+
+            <div>
+              <label for="firm">Firm / Company</label>
+              <input id="firm" name="firm" type="text" />
+            </div>
+
+            <div>
+              <label for="email">Email</label>
+              <input id="email" name="email" type="email" required />
+            </div>
+
+            <div>
+              <label for="phone">Phone</label>
+              <input id="phone" name="phone" type="tel" />
+            </div>
+
+            <div>
+              <label for="type">Type of Request</label>
+              <select id="type" name="type">
+                <option>Mobile borrower signing</option>
+                <option>Seller signing</option>
+                <option>Refinance package</option>
+                <option>Purchase closing</option>
+                <option>Overflow coverage</option>
+                <option>Evening/weekend coverage</option>
+                <option>Rush/same-day request</option>
+                <option>Other</option>
+              </select>
+            </div>
+
+            <div>
+              <label for="location">County / Location</label>
+              <input id="location" name="location" type="text" />
+            </div>
+
+            <div>
+              <label for="details">Brief File Notes</label>
+              <textarea
+                id="details"
+                name="details"
+                placeholder="Preferred date/time, package readiness, printing needs, scanbacks, deadline, and any special logistics."
+              ></textarea>
+            </div>
+
+            <button class="btn btn-primary" type="submit">Send Request</button>
+
+            <p class="form-note">
+              This form is for coverage inquiries only. Please do not send confidential documents
+              or sensitive client information until a conflict check and engagement terms are confirmed.
+            </p>
+          </form>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-grid">
+      <div>
+        <strong>Schwander Legal</strong><br />
+        Schwander Legal Services, P.A. — Formation Pending
+      </div>
+
+      <p class="disclaimer">
+        Schwander Legal Services, P.A. is in formation and is intended to provide legal services
+        through Delaware-licensed attorneys. Initial services are focused on limited-scope mobile
+        closing coverage and document execution support for law firms, settlement attorneys, and
+        title-law practices. Unless expressly agreed in writing, Schwander Legal does not hold
+        settlement funds, disburse funds, issue title insurance, open title, record documents, or
+        serve as primary settlement counsel. This website is for general information and coverage
+        inquiries only and does not create an attorney-client relationship.
+      </p>
+
+      <p class="disclaimer">
+        © <span id="year"></span> Schwander Legal. All rights reserved.
+      </p>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+</body>
+</html>
