@@ -25,7 +25,7 @@
       --text: #172033;
       --max-width: 1120px;
       --radius: 18px;
-      --shadow: 0 20px 50px rgba(11, 31, 58, 0.12);
+      --shadow: 0 20px 50px rgba(11, 31, 58, 0.10);
     }
 
     * {
@@ -59,13 +59,13 @@
       position: sticky;
       top: 0;
       z-index: 100;
-      background: rgba(248, 245, 238, 0.94);
+      background: rgba(248, 245, 238, 0.95);
       backdrop-filter: blur(14px);
       border-bottom: 1px solid rgba(11, 31, 58, 0.08);
     }
 
     .nav {
-      height: 76px;
+      height: 72px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -75,33 +75,54 @@
     .brand {
       display: flex;
       flex-direction: column;
-      line-height: 1.1;
+      line-height: 1;
     }
 
     .brand strong {
       font-family: Georgia, "Times New Roman", serif;
-      font-size: 1.35rem;
+      font-size: 1.48rem;
       color: var(--navy);
-      letter-spacing: -0.02em;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+      font-weight: 900;
+    }
+
+    .brand em {
+      font-style: normal;
+      font-family: Arial, Helvetica, sans-serif;
+      font-size: 0.72rem;
+      color: var(--navy);
+      letter-spacing: 0.24em;
+      text-transform: uppercase;
+      font-weight: 800;
+      margin-top: 4px;
     }
 
     .brand span {
-      font-size: 0.78rem;
+      font-size: 0.68rem;
       text-transform: uppercase;
-      letter-spacing: 0.16em;
+      letter-spacing: 0.20em;
       color: var(--gold);
-      font-weight: 700;
-      margin-top: 4px;
+      font-weight: 800;
+      margin-top: 6px;
     }
 
     nav ul {
       list-style: none;
       display: flex;
       align-items: center;
-      gap: 22px;
-      font-size: 0.95rem;
+      gap: 24px;
+      font-size: 0.9rem;
       color: var(--navy);
-      font-weight: 600;
+      font-weight: 800;
+    }
+
+    nav a {
+      transition: opacity 0.2s ease;
+    }
+
+    nav a:hover {
+      opacity: 0.72;
     }
 
     .nav-cta {
@@ -114,26 +135,26 @@
 
     .hero {
       position: relative;
-      padding: 96px 0 72px;
+      padding: 74px 0 64px;
       overflow: hidden;
     }
 
     .hero::before {
       content: "";
       position: absolute;
-      top: -160px;
-      right: -140px;
-      width: 420px;
-      height: 420px;
+      top: -170px;
+      right: -150px;
+      width: 400px;
+      height: 400px;
       border-radius: 50%;
-      background: rgba(200, 162, 74, 0.16);
+      background: rgba(200, 162, 74, 0.13);
       z-index: -1;
     }
 
     .hero-grid {
       display: grid;
-      grid-template-columns: 1.1fr 0.9fr;
-      gap: 44px;
+      grid-template-columns: 1fr 0.82fr;
+      gap: 54px;
       align-items: center;
     }
 
@@ -141,22 +162,22 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 7px 12px;
-      border: 1px solid rgba(200, 162, 74, 0.5);
+      padding: 6px 11px;
+      border: 1px solid rgba(200, 162, 74, 0.42);
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.6);
+      background: rgba(255, 255, 255, 0.45);
       color: var(--navy);
-      font-size: 0.82rem;
+      font-size: 0.72rem;
       font-weight: 700;
       text-transform: uppercase;
-      letter-spacing: 0.12em;
+      letter-spacing: 0.13em;
       margin-bottom: 22px;
     }
 
     .eyebrow::before {
       content: "";
-      width: 8px;
-      height: 8px;
+      width: 7px;
+      height: 7px;
       background: var(--gold);
       border-radius: 50%;
     }
@@ -168,26 +189,28 @@
     }
 
     h1 {
-      font-size: clamp(2.55rem, 6vw, 5rem);
-      letter-spacing: -0.05em;
+      font-size: clamp(2.25rem, 4.6vw, 4rem);
+      letter-spacing: -0.04em;
       margin-bottom: 22px;
+      max-width: 780px;
     }
 
     .hero p {
-      font-size: 1.18rem;
-      max-width: 660px;
+      font-size: 1.08rem;
+      max-width: 650px;
       color: var(--gray);
-      margin-bottom: 28px;
+      margin-bottom: 24px;
     }
 
     .tagline {
       font-family: Georgia, "Times New Roman", serif;
       color: var(--navy);
-      font-size: clamp(1.35rem, 3vw, 2rem);
-      line-height: 1.2;
-      margin: 30px 0;
-      padding-left: 20px;
-      border-left: 4px solid var(--gold);
+      font-size: clamp(1.18rem, 2.4vw, 1.65rem);
+      line-height: 1.25;
+      margin: 28px 0;
+      padding-left: 18px;
+      border-left: 3px solid var(--gold);
+      max-width: 620px;
     }
 
     .buttons {
@@ -201,20 +224,24 @@
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      padding: 14px 20px;
+      padding: 13px 19px;
       border-radius: 999px;
       font-weight: 800;
-      transition: transform 0.2s ease, box-shadow 0.2s ease;
+      font-size: 0.94rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.2s ease;
+      cursor: pointer;
+      border: none;
     }
 
     .btn:hover {
       transform: translateY(-2px);
+      opacity: 0.94;
     }
 
     .btn-primary {
       background: var(--navy);
       color: var(--white);
-      box-shadow: 0 14px 30px rgba(11, 31, 58, 0.22);
+      box-shadow: 0 14px 30px rgba(11, 31, 58, 0.20);
     }
 
     .btn-secondary {
@@ -224,21 +251,26 @@
     }
 
     .hero-card {
-      background: var(--white);
+      background: rgba(255, 255, 255, 0.78);
       border-radius: var(--radius);
-      padding: 30px;
-      box-shadow: var(--shadow);
-      border: 1px solid rgba(11, 31, 58, 0.08);
+      padding: 28px;
+      box-shadow: 0 14px 34px rgba(11, 31, 58, 0.08);
+      border: 1px solid rgba(11, 31, 58, 0.07);
     }
 
     .hero-card h3 {
-      font-size: 1.55rem;
-      margin-bottom: 16px;
+      font-size: 1.45rem;
+      margin-bottom: 14px;
+    }
+
+    .hero-card p {
+      color: var(--gray);
+      margin-bottom: 0;
     }
 
     .check-list {
       display: grid;
-      gap: 13px;
+      gap: 12px;
       list-style: none;
       margin-top: 18px;
     }
@@ -247,6 +279,7 @@
       display: flex;
       gap: 11px;
       color: var(--gray);
+      font-size: 0.95rem;
     }
 
     .check-list li::before {
@@ -296,7 +329,7 @@
       background: var(--white);
       border-radius: var(--radius);
       padding: 26px;
-      box-shadow: 0 12px 35px rgba(11, 31, 58, 0.08);
+      box-shadow: 0 12px 35px rgba(11, 31, 58, 0.07);
       border: 1px solid rgba(11, 31, 58, 0.07);
     }
 
@@ -497,14 +530,34 @@
         display: none;
       }
 
+      .nav {
+        height: 76px;
+      }
+
+      .brand strong {
+        font-size: 1.28rem;
+      }
+
+      .brand em {
+        font-size: 0.64rem;
+      }
+
+      .brand span {
+        font-size: 0.58rem;
+      }
+
       .hero {
-        padding: 70px 0 50px;
+        padding: 58px 0 48px;
       }
 
       .hero-grid,
       .split,
       .contact {
         grid-template-columns: 1fr;
+      }
+
+      h1 {
+        font-size: clamp(2.25rem, 12vw, 3.35rem);
       }
 
       .cards {
@@ -526,8 +579,9 @@
   <header>
     <div class="container nav">
       <a href="#top" class="brand" aria-label="Schwander Legal Home">
-        <strong>Schwander Legal</strong>
-        <span>Delaware Attorney Coverage</span>
+        <strong>Schwander</strong>
+        <em>Legal Services</em>
+        <span>Delaware Closing Coverage</span>
       </a>
 
       <nav aria-label="Primary navigation">
@@ -548,10 +602,10 @@
         <div>
           <div class="eyebrow">Schwander Legal Services, P.A. — Formation Pending</div>
 
-          <h1>Delaware attorney closing coverage when timing matters.</h1>
+          <h1>Reliable attorney coverage for Delaware real estate closings.</h1>
 
           <p>
-            Reliable, independent, per-file mobile closing support for Delaware real estate firms,
+            Independent, per-file mobile closing support for Delaware real estate firms,
             settlement attorneys, and title-law practices that need overflow, travel-heavy,
             evening, or short-notice attorney coverage.
           </p>
@@ -569,8 +623,7 @@
         <aside class="hero-card" aria-label="Service summary">
           <h3>Built for the last-mile closing problem.</h3>
           <p>
-            Schwander Legal is designed to help firms keep files moving without adding another
-            full-time employee.
+            Schwander Legal helps firms keep files moving without adding another full-time employee.
           </p>
 
           <ul class="check-list">
