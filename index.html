@@ -17,6 +17,8 @@
   />
 
   <meta name="theme-color" content="#172033" />
+  <meta name="robots" content="index, follow" />
+  <link rel="canonical" href="https://schwanderlegal.com/" />
 
   <meta
     property="og:title"
@@ -30,6 +32,7 @@
 
   <meta property="og:type" content="website" />
   <meta property="og:url" content="https://schwanderlegal.com/" />
+  <meta property="og:site_name" content="Schwander Legal Services, P.A." />
 
   <script type="application/ld+json">
   {
@@ -44,6 +47,11 @@
       "Sussex County, Delaware"
     ],
     "description": "Delaware-licensed attorney coverage for prepared residential refinance files, including signing appointments, document review, limited-scope attorney assignments, overflow coverage, and secure scanback and package-return support.",
+    "serviceType": "Delaware residential refinance closing attorney coverage",
+    "audience": {
+      "@type": "BusinessAudience",
+      "audienceType": "Title companies, settlement companies, mortgage lenders, law firms, signing services, and vendor management teams"
+    },
     "founder": {
       "@type": "Person",
       "name": "Michael Schwander",
@@ -95,6 +103,12 @@
     a {
       color: inherit;
       text-decoration: none;
+    }
+
+    a:focus-visible,
+    button:focus-visible {
+      outline: 3px solid rgba(182, 154, 91, 0.72);
+      outline-offset: 3px;
     }
 
     h1,
@@ -513,6 +527,33 @@
       color: var(--gold-dark);
     }
 
+    .stats {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+      margin-bottom: 22px;
+    }
+
+    .stat {
+      border-radius: var(--radius);
+      padding: 28px;
+      background: var(--ink);
+      color: #ffffff;
+    }
+
+    .stat strong {
+      display: block;
+      color: #e1ca91;
+      font-size: clamp(30px, 4vw, 46px);
+      line-height: 1;
+      letter-spacing: -0.045em;
+      margin-bottom: 9px;
+    }
+
+    .stat span {
+      color: rgba(255, 255, 255, 0.82);
+    }
+
     .process-five {
       display: grid;
       grid-template-columns: repeat(5, 1fr);
@@ -813,6 +854,7 @@
       .grid-4,
       .grid-3,
       .grid-2,
+      .stats,
       .process-five,
       .review-grid,
       .footer-inner {
@@ -844,6 +886,20 @@
         margin: 0 14px 0 0;
       }
     }
+
+    @media (prefers-reduced-motion: reduce) {
+      html {
+        scroll-behavior: auto;
+      }
+
+      *,
+      *::before,
+      *::after {
+        transition-duration: 0.01ms !important;
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+      }
+    }
   </style>
 </head>
 
@@ -865,10 +921,7 @@
         <a href="#coverage">Coverage</a>
         <a href="#credentials">Credentials</a>
 
-        
-          class="btn btn-primary"
-          href="mailto:michaelschwander@schwanderlegal.com?subject=Delaware%20Refinance%20Coverage%20Rate%20Sheet"
-        >
+        <a class="btn btn-primary" href="mailto:michaelschwander@schwanderlegal.com?subject=Delaware%20Refinance%20Coverage%20Rate%20Sheet" >
           Request Rate Sheet
         </a>
       </div>
@@ -902,17 +955,11 @@
           </p>
 
           <div class="hero-actions">
-            
-              class="btn btn-primary"
-              href="mailto:michaelschwander@schwanderlegal.com?subject=Delaware%20Refinance%20Closing%20Coverage%20Request&body=Company%3A%0AContact%3A%0AClosing%20date%20and%20time%3A%0ACounty%3A%0ASigning%20location%3A%0APackage%20status%3A%0AScanback%20requirements%3A%0ASpecial%20instructions%3A"
-            >
+            <a class="btn btn-primary" href="mailto:michaelschwander@schwanderlegal.com?subject=Delaware%20Refinance%20Closing%20Coverage%20Request&body=Company%3A%0AContact%3A%0AClosing%20date%20and%20time%3A%0ACounty%3A%0ASigning%20location%3A%0APackage%20status%3A%0AScanback%20requirements%3A%0ASpecial%20instructions%3A" >
               Request Closing Coverage
             </a>
 
-            
-              class="btn btn-secondary"
-              href="mailto:michaelschwander@schwanderlegal.com?subject=Vendor%20Onboarding%20Materials%20Request"
-            >
+            <a class="btn btn-secondary" href="mailto:michaelschwander@schwanderlegal.com?subject=Vendor%20Onboarding%20Materials%20Request" >
               Start Vendor Onboarding
             </a>
           </div>
@@ -926,7 +973,7 @@
               <span class="check">✓</span>
               <span>
                 Approximately 600 Delaware residential refinance closings
-                personally handled
+                handled during prior Delaware closing-attorney practice
               </span>
             </li>
 
@@ -953,8 +1000,8 @@
             <li>
               <span class="check">✓</span>
               <span>
-                Insured and structured so no client or transaction funds
-                are ever received or held
+                Under this coverage model, no client or transaction funds
+                are received, held, controlled, or disbursed
               </span>
             </li>
           </ul>
@@ -970,8 +1017,8 @@
         </div>
 
         <div class="trust-item">
-          <strong>Approximately 600 Closings</strong>
-          <span>Residential refinance closing experience</span>
+          <strong>Approximately 600 Refinance Closings</strong>
+          <span>Prior Delaware closing-attorney experience</span>
         </div>
 
         <div class="trust-item">
@@ -980,8 +1027,8 @@
         </div>
 
         <div class="trust-item">
-          <strong>Active Cyber Liability Coverage</strong>
-          <span>Insurance documentation available for onboarding</span>
+          <strong>Cyber Liability Insured</strong>
+          <span>Active coverage documented for vendor onboarding</span>
         </div>
       </div>
     </section>
@@ -1098,8 +1145,8 @@
             <div class="icon">ML</div>
             <h3>Mortgage Lenders</h3>
             <p>
-              Delaware attorney-state signing support through approved vendor,
-              referral, title, settlement, or law-firm channels.
+              Attorney-led Delaware refinance signing support through approved
+              vendor, referral, title, settlement, or law-firm channels.
             </p>
           </article>
 
@@ -1543,8 +1590,8 @@
         <p>
           Founder Michael Schwander is admitted to practice law in Delaware and
           has handled approximately 600 Delaware residential refinance
-          closings during prior closing-attorney practice. No Pennsylvania or
-          other multi-state licensure claim is made on this website.
+          closings during prior Delaware closing-attorney practice. The services
+          described on this page are limited to Delaware matters.
         </p>
       </div>
 
@@ -1561,17 +1608,23 @@
           <h3>Professional Liability Coverage</h3>
           <p>
             Active lawyers' professional liability insurance with $1 million
-            per claim and $1 million aggregate limits, plus active cyber
-            liability coverage.
+            per claim and $1 million aggregate limits.
           </p>
         </article>
 
         <article class="card">
-          <h3>Notary Status</h3>
+          <h3>Cyber Liability Coverage</h3>
           <p>
-            Notarial capability and current status are confirmed during
-            onboarding and before any accepted assignment requiring
-            notarization.
+            Active cyber liability coverage, with insurance documentation
+            available for vendor onboarding and compliance review.
+          </p>
+        </article>
+
+        <article class="card">
+          <h3>Notarial Capability</h3>
+          <p>
+            Notarial capability is confirmed during onboarding and before any
+            accepted assignment requiring notarization.
           </p>
         </article>
 
@@ -1586,17 +1639,9 @@
         <article class="card">
           <h3>No Funds Held</h3>
           <p>
-            The firm does not receive, hold, control, transfer, or disburse
-            client, transaction, escrow, trust, lender, or payoff funds under
-            this coverage model.
-          </p>
-        </article>
-
-        <article class="card">
-          <h3>Independent Judgment</h3>
-          <p>
-            Every assignment is subject to a conflicts check and a written,
-            file-specific scope of engagement before work begins.
+            Under this coverage model, the firm does not receive, hold, control,
+            transfer, or disburse client, transaction, escrow, trust, lender, or
+            payoff funds.
           </p>
         </article>
       </div>
@@ -1619,19 +1664,15 @@
           </p>
 
           <div class="hero-actions">
-            
-              class="btn btn-primary"
-              href="mailto:michaelschwander@schwanderlegal.com?subject=Delaware%20Refinance%20Closing%20Coverage%20Request&body=Company%3A%0AContact%3A%0AClosing%20date%20and%20time%3A%0ACounty%3A%0ASigning%20location%3A%0APackage%20status%3A%0AScanback%20requirements%3A%0ASpecial%20instructions%3A%0ARequested%20vendor%20documents%3A"
-            >
+            <a class="btn btn-primary" href="mailto:michaelschwander@schwanderlegal.com?subject=Delaware%20Refinance%20Closing%20Coverage%20Request&body=Company%3A%0AContact%3A%0AClosing%20date%20and%20time%3A%0ACounty%3A%0ASigning%20location%3A%0APackage%20status%3A%0AScanback%20requirements%3A%0ASpecial%20instructions%3A%0ARequested%20vendor%20documents%3A" >
               Email Coverage Request
             </a>
 
-            
+            <a
               class="btn btn-secondary"
-              href="Schwander-Legal-Capability-Statement.pdf"
-              download
+              href="mailto:michaelschwander@schwanderlegal.com?subject=Capability%20Statement%20and%20Vendor%20Documents%20Request"
             >
-              Download Capability Statement
+              Request Capability Statement
             </a>
           </div>
         </div>
@@ -1639,13 +1680,13 @@
         <div class="contact-box">
           <div class="contact-line">
             <span>Email</span>
-            <strong>michaelschwander@schwanderlegal.com</strong>
+            <strong><a href="mailto:michaelschwander@schwanderlegal.com">michaelschwander@schwanderlegal.com</a></strong>
           </div>
 
+          <!-- Add a public business phone row here after the number is confirmed. -->
           <div class="contact-line">
-            <!-- TODO: replace with your real number before publishing -->
-            <span>Phone</span>
-            <strong>302-750-6276</strong>
+            <span>Scheduling</span>
+            <strong>Direct contact details provided during onboarding</strong>
           </div>
 
           <div class="contact-line">
