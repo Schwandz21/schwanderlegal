@@ -1,0 +1,57 @@
+name: Integrate SLS banner and favicon
+on:
+  push:
+    branches: [main]
+    paths: ['.github/workflows/integrate-sls-branding.yml']
+permissions:
+  contents: write
+jobs:
+  integrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Materialize approved image assets
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          mkdir -p assets
+          gh api repos/${{ github.repository }}/git/blobs/60cff70be6c89327f07bddfe6bbe717a8878fe9b --jq .content | tr -d '\n' | base64 -d > assets/sls-banner.jpg
+          gh api repos/${{ github.repository }}/git/blobs/04a5e7b4450735a0d35fa759cc7a03c841175962 --jq .content | tr -d '\n' | base64 -d > assets/favicon-32.png
+      - name: Patch live page
+        shell: python
+        run: |
+          from pathlib import Path
+          p=Path('index.html'); s=p.read_text()
+          canonical='  <link rel="canonical" href="https://schwanderlegal.com/" />'
+          favicon='  <link rel="icon" type="image/png" sizes="32x32" href="assets/favicon-32.png" />'
+          if favicon not in s:
+              if canonical not in s: raise SystemExit('canonical marker missing')
+              s=s.replace(canonical, canonical+'\n'+favicon, 1)
+          css='''\n    .hero-brand-banner {\n      position: relative; z-index: 2; max-width: var(--max);\n      margin: 0 auto; padding: 28px 22px 0;\n    }\n    .hero-brand-banner img {\n      display: block; width: 100%; height: auto; border-radius: 18px;\n      border: 1px solid rgba(255,255,255,.18);\n      box-shadow: 0 18px 42px rgba(27,42,60,.22);\n    }\n'''
+          marker='    .hero-inner {'
+          if '.hero-brand-banner {' not in s:
+              if marker not in s: raise SystemExit('hero CSS marker missing')
+              s=s.replace(marker, css+'\n'+marker, 1)
+          hero='<section class="hero" aria-labelledby="hero-title">'
+          block='''<section class="hero" aria-labelledby="hero-title">\n      <div class="hero-brand-banner" aria-label="Schwander Legal Services, P.A.">\n        <img src="assets/sls-banner.jpg" alt="Schwander Legal Services, P.A. — Delaware law firm" width="900" height="386" />\n      </div>'''
+          if 'class="hero-brand-banner"' not in s:
+              if hero not in s: raise SystemExit('hero marker missing')
+              s=s.replace(hero, block, 1)
+          p.write_text(s)
+      - name: Validate and publish
+        run: |
+          git diff --check
+          test -s assets/sls-banner.jpg
+          test -s assets/favicon-32.png
+          grep -q 'assets/favicon-32.png' index.html
+          grep -q 'class="hero-brand-banner"' index.html
+          grep -q 'assets/sls-banner.jpg' index.html
+          git config user.name 'Schwander Legal Site Publisher'
+          git config user.email 'actions@users.noreply.github.com'
+          git add index.html assets/sls-banner.jpg assets/favicon-32.png
+          git rm .github/workflows/integrate-sls-branding.yml
+          git commit -m 'Integrate SLS banner and favicon'
+          git push origin main
