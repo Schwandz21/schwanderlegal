@@ -1,0 +1,203 @@
+name: Integrate official SLS branding
+
+on:
+  push:
+    branches: [integrate-banner-favicon]
+    paths:
+      - '.github/workflows/integrate-sls-brand.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  integrate:
+    if: github.event.head_commit.message != 'Integrate official SLS website branding'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: integrate-banner-favicon
+          fetch-depth: 0
+
+      - name: Integrate official banner wordmark and favicon
+        shell: python
+        run: |
+          from pathlib import Path
+          import re
+
+          p = Path('index.html')
+          s = p.read_text()
+
+          canonical = '  <link rel="canonical" href="https://schwanderlegal.com/" />'
+          favicon_block = '''  <link rel="canonical" href="https://schwanderlegal.com/" />
+  <link rel="icon" type="image/jpeg" sizes="64x64" href="/assets/favicon-64.jpg?v=20260828" />
+  <link rel="shortcut icon" href="/assets/favicon-64.jpg?v=20260828" />
+  <link rel="apple-touch-icon" href="/assets/favicon-64.jpg?v=20260828" />'''
+          if '/assets/favicon-64.jpg' not in s:
+              if canonical not in s:
+                  raise SystemExit('Canonical link not found; refusing partial edit')
+              s = s.replace(canonical, favicon_block, 1)
+
+          og_site = '  <meta property="og:site_name" content="Schwander Legal Services, P.A." />'
+          og_block = '''  <meta property="og:site_name" content="Schwander Legal Services, P.A." />
+  <meta property="og:image" content="https://schwanderlegal.com/assets/sls-wordmark-header.jpg?v=20260828" />
+  <meta property="og:image:alt" content="Schwander Legal Services, P.A. official wordmark" />'''
+          if 'property="og:image"' not in s:
+              if og_site not in s:
+                  raise SystemExit('OG site-name marker not found')
+              s = s.replace(og_site, og_block, 1)
+
+          def replace_block(text, selector, replacement):
+              pattern = rf'^    {re.escape(selector)} \{{.*?^    \}}'
+              new_text, n = re.subn(pattern, replacement, text, count=1, flags=re.M | re.S)
+              if n != 1:
+                  raise SystemExit(f'Expected exactly one CSS block for {selector}; got {n}')
+              return new_text
+
+          s = replace_block(s, '.site-header', '''    .site-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: linear-gradient(90deg, #021f43 0%, #06365f 58%, #0a4677 100%);
+      border-bottom: 1px solid rgba(198, 160, 81, 0.72);
+      box-shadow: 0 8px 28px rgba(2, 31, 67, 0.18);
+    }''')
+
+          s = replace_block(s, '.nav', '''    .nav {
+      max-width: var(--max);
+      margin: 0 auto;
+      min-height: 102px;
+      padding: 9px 22px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+    }''')
+
+          s = replace_block(s, '.brand', '''    .brand {
+      display: flex;
+      align-items: center;
+      flex: 0 1 340px;
+      min-width: 255px;
+    }''')
+
+          # Keep the legacy mark CSS harmlessly unused; add the actual image treatment.
+          marker = '''    .brand small {
+      display: block;
+      margin-top: -3px;
+      color: var(--muted);
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+    }'''
+          logo_css = marker + '''
+
+    .brand-logo {
+      display: block;
+      width: min(330px, 35vw);
+      max-height: 86px;
+      height: auto;
+      object-fit: contain;
+      object-position: left center;
+    }'''
+          if '.brand-logo {' not in s:
+              if marker not in s:
+                  raise SystemExit('Brand-small CSS marker not found')
+              s = s.replace(marker, logo_css, 1)
+
+          s = replace_block(s, '.nav-links', '''    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+      font-size: 14px;
+      color: rgba(255, 255, 255, 0.92);
+      font-weight: 700;
+    }''')
+
+          s = replace_block(s, '.nav-links a:hover', '''    .nav-links a:hover {
+      color: #f5d98c;
+    }''')
+
+          old_brand = '''      <a class="brand" href="#top" aria-label="Schwander Legal Services home">
+        <span class="brand-mark" aria-hidden="true">S</span>
+
+        <span>
+          Schwander Legal Services, P.A.
+          <small>Delaware Refinance Closing Coverage</small>
+        </span>
+      </a>'''
+          new_brand = '''      <a class="brand" href="#top" aria-label="Schwander Legal Services, P.A. home">
+        <img
+          class="brand-logo"
+          src="/assets/sls-wordmark-header.jpg?v=20260828"
+          alt="Schwander Legal Services, P.A."
+          width="560"
+          height="161"
+          decoding="async"
+        />
+      </a>'''
+          if old_brand not in s:
+              raise SystemExit('Expected legacy header brand markup not found')
+          s = s.replace(old_brand, new_brand, 1)
+
+          mobile_nav = '''      .nav {
+        min-height: 68px;
+      }'''
+          mobile_replacement = '''      .nav {
+        min-height: 76px;
+        padding: 7px 14px;
+        gap: 12px;
+      }
+
+      .brand {
+        min-width: 0;
+        flex: 1 1 auto;
+      }
+
+      .brand-logo {
+        width: min(245px, 58vw);
+        max-height: 68px;
+      }'''
+          if mobile_nav not in s:
+              raise SystemExit('Mobile nav marker not found')
+          s = s.replace(mobile_nav, mobile_replacement, 1)
+
+          # Acceptance checks: brand replaces generic letter tile; favicon and OG image are wired;
+          # original page content/links remain untouched outside header/head styling.
+          required = [
+              '/assets/sls-wordmark-header.jpg?v=20260828',
+              '/assets/favicon-64.jpg?v=20260828',
+              'class="brand-logo"',
+              'alt="Schwander Legal Services, P.A."',
+              'Request Rate Sheet',
+              'Delaware Refinance Closing Coverage for Your Existing Files',
+          ]
+          for item in required:
+              if item not in s:
+                  raise SystemExit(f'Missing required branded-site marker: {item}')
+          if '<span class="brand-mark"' in s:
+              raise SystemExit('Legacy generic S tile still present in header')
+          if s.count('mailto:') != 6:
+              raise SystemExit(f'Mailto link count changed unexpectedly: {s.count("mailto:")}')
+
+          p.write_text(s)
+
+      - name: Validate assets and page
+        run: |
+          test -s assets/sls-wordmark-header.jpg
+          test -s assets/favicon-64.jpg
+          file assets/sls-wordmark-header.jpg | grep -q 'JPEG image data'
+          file assets/favicon-64.jpg | grep -q 'JPEG image data'
+          git diff --check
+          grep -q 'class="brand-logo"' index.html
+          grep -q '/assets/favicon-64.jpg?v=20260828' index.html
+
+      - name: Commit branded header and clean workflow
+        run: |
+          git config user.name "Schwander Legal Site Publisher"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html assets
+          git rm .github/workflows/integrate-sls-brand.yml
+          git commit -m "Integrate official SLS website branding"
+          git push origin integrate-banner-favicon
