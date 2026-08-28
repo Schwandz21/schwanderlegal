@@ -1,0 +1,34 @@
+name: Publish final SLS website
+
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    if: github.event.head_commit.message != 'Publish final SLS website'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Decode and verify final index
+        shell: bash
+        run: |
+          base64 -d .final-index.gz.b64 | gzip -d > index.html
+          test "$(wc -c < index.html | tr -d ' ')" = "48055"
+          echo "2d6cb0a4a2fc812c3592c204d6566455  index.html" | md5sum -c -
+          echo "1deed1eef1ae0819ed181f046ce8b8e4ae2edae89f9c29b3d1636aed6e53e056  index.html" | sha256sum -c -
+
+      - name: Commit final site and clean staging files
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          rm .final-index.gz.b64
+          rm .github/workflows/publish-final-sls.yml
+          git add index.html .final-index.gz.b64 .github/workflows/publish-final-sls.yml
+          git commit -m "Publish final SLS website"
+          git push origin main
