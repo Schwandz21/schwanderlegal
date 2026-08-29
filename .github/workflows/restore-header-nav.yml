@@ -25,49 +25,19 @@ jobs:
           import re
           p = Path('index.html')
           s = p.read_text()
-
-          if re.search(r'(?m)^\s*\.nav-links \{', s):
-              print('nav-links rule already present; leaving it intact')
-          else:
+          if not re.search(r'(?m)^\s*\.nav-links \{', s):
               brand = re.search(r'(?ms)^\s*\.brand-logo \{.*?^\s*\}', s)
               if not brand:
                   raise SystemExit('brand-logo rule missing')
-              nav_css = '''
-
-    .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 28px;
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.94);
-      font-weight: 760;
-      flex: 0 0 auto;
-    }
-
-    .nav-links a:hover {
-      color: #f5d98c;
-    }'''
+              nav_css = "\n\n    .nav-links {\n      display: flex;\n      align-items: center;\n      gap: 28px;\n      font-size: 14px;\n      color: rgba(255, 255, 255, 0.94);\n      font-weight: 760;\n      flex: 0 0 auto;\n    }\n\n    .nav-links a:hover {\n      color: #f5d98c;\n    }"
               s = s[:brand.end()] + nav_css + s[brand.end():]
-
-          # Final header acceptance checks.
-          required = [
-              '/assets/sls-lockup.png?v=20260829e',
-              'filter: none;',
-              'opacity: 1;',
-              'mix-blend-mode: normal;',
-              'box-shadow: none;',
-              '.nav-links {',
-              '.nav-links a:hover {',
-              'Request Rate Sheet',
-          ]
+          required = ['/assets/sls-lockup.png?v=20260829e','filter: none;','opacity: 1;','mix-blend-mode: normal;','box-shadow: none;','.nav-links {','.nav-links a:hover {','Request Rate Sheet']
           for needle in required:
               if needle not in s:
                   raise SystemExit(f'Missing required header condition: {needle}')
-
           logo = re.search(r'(?ms)^\s*\.brand-logo \{.*?^\s*\}', s).group(0)
           if 'drop-shadow' in logo:
               raise SystemExit('Old logo drop-shadow survived')
-
           p.write_text(s)
           PY
           git diff --check
