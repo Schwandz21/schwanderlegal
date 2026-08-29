@@ -82,13 +82,13 @@
       --paper: #ffffff;
       --soft: #f8f6f1;
       --soft-gold: #f5eedc;
-      --gold: #c6a051;
-      --gold-dark: #8a6e2f;
+      --gold: #ead788;
+      --gold-dark: #8c7132;
       --success: #1d6b56;
       --danger: #8c4a3d;
-      --blue: #35699a;
-      --blue-deep: #275580;
-      --blue-light: #3d73a6;
+      --blue: #0a5574;
+      --blue-deep: #00415b;
+      --blue-light: #2d6b86;
       --shadow: 0 24px 60px rgba(39, 85, 128, 0.15);
       --radius: 20px;
       --max: 1140px;
@@ -135,31 +135,61 @@
     }
 
     .site-header {
-      position: sticky;
-      top: 0;
-      z-index: 20;
-      background: linear-gradient(104deg, #214c75 0%, #2d5f8d 58%, #35699a 100%);
-      border-bottom: 1px solid rgba(198, 160, 81, 0.34);
-      box-shadow: 0 7px 24px rgba(39, 85, 128, 0.14);
-    }
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    isolation: isolate;
+    background:
+      radial-gradient(circle at 18% -55%, rgba(234, 215, 136, 0.12), transparent 42%),
+      linear-gradient(118deg, #032f45 0%, #00415b 48%, #0a5574 100%);
+    border-bottom: 1px solid rgba(234, 215, 136, 0.52);
+    box-shadow: 0 10px 30px rgba(1, 41, 58, 0.20);
+  }
+
+    .site-header::before {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: -1;
+    pointer-events: none;
+    opacity: 0.34;
+    background:
+      linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.035) 38%, transparent 72%),
+      radial-gradient(circle at 78% 20%, rgba(255, 255, 255, 0.045), transparent 32%);
+  }
 
     .nav {
-      max-width: var(--max);
-      margin: 0 auto;
-      min-height: 96px;
-      padding: 10px 22px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 28px;
-    }
+    position: relative;
+    max-width: 1280px;
+    margin: 0 auto;
+    min-height: 126px;
+    padding: 16px 28px 15px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 42px;
+  }
+
+    .nav::after {
+    content: "";
+    position: absolute;
+    left: 50%;
+    bottom: -6px;
+    width: 10px;
+    height: 10px;
+    background: #00415b;
+    border: 1px solid rgba(234, 215, 136, 0.90);
+    transform: translateX(-50%) rotate(45deg);
+    box-shadow: 0 0 0 3px rgba(0, 65, 91, 0.92);
+  }
 
     .brand {
-      display: flex;
-      align-items: center;
-      flex: 0 1 340px;
-      min-width: 255px;
-    }
+    display: flex;
+    align-items: center;
+    flex: 1 1 430px;
+    min-width: 330px;
+    max-width: 460px;
+  }
 
     .brand-mark {
       width: 44px;
@@ -186,24 +216,24 @@
     }
 
     .brand-logo {
-      display: block;
-      width: min(330px, 35vw);
-      max-height: 80px;
-      height: auto;
-      object-fit: contain;
-      object-position: left center;
-      filter: drop-shadow(0 3px 6px rgba(19, 43, 67, 0.24));
-    }
+    display: block;
+    width: min(420px, 38vw);
+    max-width: 100%;
+    height: auto;
+    object-fit: contain;
+    object-position: left center;
+    filter: drop-shadow(0 5px 10px rgba(1, 32, 46, 0.28));
+  }
 
     .nav-links {
-      display: flex;
-      align-items: center;
-      gap: 20px;
-      font-size: 14px;
-      color: rgba(255, 255, 255, 0.92);
-      font-weight: 700;
-      flex: 0 0 auto;
-    }
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.94);
+    font-weight: 760;
+    flex: 0 0 auto;
+  }
 
     .nav-links a:hover {
       color: #f5d98c;
@@ -244,17 +274,14 @@
     }
 
     .hero {
-      position: relative;
-      overflow: hidden;
-      color: #ffffff;
-      background:
-        radial-gradient(
-          circle at 82% 10%,
-          rgba(198, 160, 81, 0.21),
-          transparent 29%
-        ),
-        linear-gradient(135deg, #275580 0%, #35699a 48%, #3d73a6 100%);
-    }
+    position: relative;
+    overflow: hidden;
+    color: #ffffff;
+    background:
+      radial-gradient(circle at 80% 8%, rgba(234, 215, 136, 0.16), transparent 30%),
+      radial-gradient(circle at 12% 22%, rgba(255, 255, 255, 0.045), transparent 30%),
+      linear-gradient(145deg, #00415b 0%, #0a5574 50%, #2d6b86 100%);
+  }
 
     .hero::after {
       content: "";
@@ -267,16 +294,16 @@
 
 
     .hero-inner {
-      position: relative;
-      z-index: 1;
-      max-width: var(--max);
-      margin: 0 auto;
-      padding: 78px 22px 84px;
-      display: grid;
-      grid-template-columns: 1.17fr 0.83fr;
-      gap: 46px;
-      align-items: center;
-    }
+    position: relative;
+    z-index: 1;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 72px 28px 90px;
+    display: grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap: 56px;
+    align-items: center;
+  }
 
     .eyebrow,
     .section-kicker {
@@ -319,12 +346,13 @@
     }
 
     .hero-card {
-      background: rgba(255, 255, 255, 0.1);
-      border: 1px solid rgba(255, 255, 255, 0.18);
-      box-shadow: var(--shadow);
-      border-radius: var(--radius);
-      padding: 29px;
-    }
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.095), rgba(255, 255, 255, 0.055));
+    border: 1px solid rgba(234, 215, 136, 0.32);
+    box-shadow: 0 24px 58px rgba(0, 34, 48, 0.20);
+    border-radius: var(--radius);
+    padding: 31px;
+    backdrop-filter: blur(6px);
+  }
 
     .hero-card h2 {
       font-size: 25px;
@@ -930,6 +958,21 @@
       }
     }
 
+    @media (max-width: 1120px) and (min-width: 981px) {
+    .nav { gap: 24px; padding-left: 22px; padding-right: 22px; }
+    .brand { flex-basis: 350px; min-width: 290px; }
+    .brand-logo { width: min(360px, 33vw); }
+    .nav-links { gap: 18px; }
+  }
+
+  @media (max-width: 720px) {
+    .nav { min-height: 94px; padding: 10px 16px 9px; gap: 0; justify-content: center; }
+    .nav::after { width: 8px; height: 8px; bottom: -5px; }
+    .brand { min-width: 0; max-width: none; flex: 1 1 100%; justify-content: center; overflow: visible; }
+    .brand-logo { width: min(326px, 88vw); max-width: 100%; height: auto; object-position: center; }
+    .hero-inner { padding-top: 60px; }
+  }
+
     @media (prefers-reduced-motion: reduce) {
       html {
         scroll-behavior: auto;
@@ -950,7 +993,7 @@
   <header class="site-header">
     <nav class="nav" aria-label="Primary navigation">
       <a class="brand" href="#top" aria-label="Schwander Legal Services, P.A. home">
-        <img class="brand-logo" src="/assets/sls-lockup.png?v=20260829" alt="Schwander Legal Services, P.A." decoding="async" />
+        <img class="brand-logo" src="/assets/sls-lockup.png?v=20260829c" alt="Schwander Legal Services, P.A." decoding="async" />
       </a>
 
       <div class="nav-links">
