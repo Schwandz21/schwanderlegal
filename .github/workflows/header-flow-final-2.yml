@@ -1,0 +1,314 @@
+name: Apply final flowing SLS header treatment v2
+
+on:
+  push:
+    branches:
+      - fix/header-flow-final
+    paths:
+      - '.github/workflows/header-flow-final-2.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out branch
+        uses: actions/checkout@v4
+        with:
+          ref: fix/header-flow-final
+          fetch-depth: 0
+
+      - name: Apply visual treatment
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          p = Path('index.html')
+          s = p.read_text()
+
+          swaps = [
+            ('      --gold: #c6a051;', '      --gold: #ead788;'),
+            ('      --gold-dark: #8a6e2f;', '      --gold-dark: #8c7132;'),
+            ('      --blue: #35699a;', '      --blue: #0a5574;'),
+            ('      --blue-deep: #275580;', '      --blue-deep: #00415b;'),
+            ('      --blue-light: #3d73a6;', '      --blue-light: #2d6b86;'),
+          ]
+          for old, new in swaps:
+            if old not in s:
+              raise SystemExit(f'Missing expected source: {old}')
+            s = s.replace(old, new, 1)
+
+          old = '''    .site-header {
+              position: sticky;
+              top: 0;
+              z-index: 20;
+              background: linear-gradient(104deg, #214c75 0%, #2d5f8d 58%, #35699a 100%);
+              border-bottom: 1px solid rgba(198, 160, 81, 0.34);
+              box-shadow: 0 7px 24px rgba(39, 85, 128, 0.14);
+            }
+
+            .nav {
+              max-width: var(--max);
+              margin: 0 auto;
+              min-height: 96px;
+              padding: 10px 22px;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              gap: 28px;
+            }
+
+            .brand {
+              display: flex;
+              align-items: center;
+              flex: 0 1 340px;
+              min-width: 255px;
+            }'''.replace('            ', '    ')
+          new = '''    /* The exact official SLS lockup remains unchanged; its transparent field now dissolves into the site. */
+            .site-header {
+              position: sticky;
+              top: 0;
+              z-index: 20;
+              isolation: isolate;
+              background:
+                radial-gradient(circle at 18% -55%, rgba(234, 215, 136, 0.12), transparent 42%),
+                linear-gradient(118deg, #032f45 0%, #00415b 48%, #0a5574 100%);
+              border-bottom: 1px solid rgba(234, 215, 136, 0.52);
+              box-shadow: 0 10px 30px rgba(1, 41, 58, 0.2);
+            }
+
+            .site-header::before {
+              content: "";
+              position: absolute;
+              inset: 0;
+              z-index: -1;
+              pointer-events: none;
+              opacity: 0.34;
+              background:
+                linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.035) 38%, transparent 72%),
+                radial-gradient(circle at 78% 20%, rgba(255, 255, 255, 0.045), transparent 32%);
+            }
+
+            .nav {
+              position: relative;
+              max-width: 1280px;
+              margin: 0 auto;
+              min-height: 126px;
+              padding: 16px 28px 15px;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              gap: 42px;
+            }
+
+            .nav::after {
+              content: "";
+              position: absolute;
+              left: 50%;
+              bottom: -6px;
+              width: 10px;
+              height: 10px;
+              background: #00415b;
+              border: 1px solid rgba(234, 215, 136, 0.9);
+              transform: translateX(-50%) rotate(45deg);
+              box-shadow: 0 0 0 3px rgba(0, 65, 91, 0.92);
+            }
+
+            .brand {
+              display: flex;
+              align-items: center;
+              flex: 1 1 430px;
+              min-width: 330px;
+              max-width: 460px;
+            }'''.replace('            ', '    ')
+          if old not in s:
+            raise SystemExit('Header/nav source block changed; refusing blind replacement')
+          s = s.replace(old, new, 1)
+
+          old = '''    .brand-logo {
+              display: block;
+              width: min(330px, 35vw);
+              max-height: 80px;
+              height: auto;
+              object-fit: contain;
+              object-position: left center;
+              filter: drop-shadow(0 3px 6px rgba(19, 43, 67, 0.24));
+            }'''.replace('            ', '    ')
+          new = '''    .brand-logo {
+              display: block;
+              width: min(420px, 38vw);
+              max-width: 100%;
+              height: auto;
+              object-fit: contain;
+              object-position: left center;
+              filter: drop-shadow(0 5px 10px rgba(1, 32, 46, 0.28));
+            }'''.replace('            ', '    ')
+          if old not in s: raise SystemExit('brand-logo source block changed')
+          s = s.replace(old, new, 1)
+
+          old = '''    .nav-links {
+              display: flex;
+              align-items: center;
+              gap: 20px;
+              font-size: 14px;
+              color: rgba(255, 255, 255, 0.92);
+              font-weight: 700;
+              flex: 0 0 auto;
+            }'''.replace('            ', '    ')
+          new = '''    .nav-links {
+              display: flex;
+              align-items: center;
+              gap: 28px;
+              font-size: 14px;
+              color: rgba(255, 255, 255, 0.94);
+              font-weight: 760;
+              flex: 0 0 auto;
+            }'''.replace('            ', '    ')
+          if old not in s: raise SystemExit('nav-links source block changed')
+          s = s.replace(old, new, 1)
+
+          old = '''    .hero {
+              position: relative;
+              overflow: hidden;
+              color: #ffffff;
+              background:
+                radial-gradient(
+                  circle at 82% 10%,
+                  rgba(198, 160, 81, 0.21),
+                  transparent 29%
+                ),
+                linear-gradient(135deg, #275580 0%, #35699a 48%, #3d73a6 100%);
+            }'''.replace('            ', '    ')
+          new = '''    .hero {
+              position: relative;
+              overflow: hidden;
+              color: #ffffff;
+              background:
+                radial-gradient(circle at 80% 8%, rgba(234, 215, 136, 0.16), transparent 30%),
+                radial-gradient(circle at 12% 22%, rgba(255, 255, 255, 0.045), transparent 30%),
+                linear-gradient(145deg, #00415b 0%, #0a5574 50%, #2d6b86 100%);
+            }'''.replace('            ', '    ')
+          if old not in s: raise SystemExit('hero source block changed')
+          s = s.replace(old, new, 1)
+
+          old = '''    .hero-inner {
+              position: relative;
+              z-index: 1;
+              max-width: var(--max);
+              margin: 0 auto;
+              padding: 78px 22px 84px;
+              display: grid;
+              grid-template-columns: 1.17fr 0.83fr;
+              gap: 46px;
+              align-items: center;
+            }'''.replace('            ', '    ')
+          new = '''    .hero-inner {
+              position: relative;
+              z-index: 1;
+              max-width: 1200px;
+              margin: 0 auto;
+              padding: 72px 28px 90px;
+              display: grid;
+              grid-template-columns: 1.15fr 0.85fr;
+              gap: 56px;
+              align-items: center;
+            }'''.replace('            ', '    ')
+          if old not in s: raise SystemExit('hero-inner source block changed')
+          s = s.replace(old, new, 1)
+
+          old = '''    .hero-card {
+              background: rgba(255, 255, 255, 0.1);
+              border: 1px solid rgba(255, 255, 255, 0.18);
+              box-shadow: var(--shadow);
+              border-radius: var(--radius);
+              padding: 29px;
+            }'''.replace('            ', '    ')
+          new = '''    .hero-card {
+              background: linear-gradient(145deg, rgba(255, 255, 255, 0.095), rgba(255, 255, 255, 0.055));
+              border: 1px solid rgba(234, 215, 136, 0.32);
+              box-shadow: 0 24px 58px rgba(0, 34, 48, 0.2);
+              border-radius: var(--radius);
+              padding: 31px;
+              backdrop-filter: blur(6px);
+            }'''.replace('            ', '    ')
+          if old not in s: raise SystemExit('hero-card source block changed')
+          s = s.replace(old, new, 1)
+
+          old = '''      .nav {
+                min-height: 78px;
+                padding: 8px 14px;
+                gap: 0;
+                justify-content: center;
+              }
+
+              .brand {
+                min-width: 0;
+                flex: 1 1 100%;
+                justify-content: center;
+                overflow: hidden;
+              }
+
+              .brand-logo {
+                width: min(300px, 82vw);
+                max-height: 64px;
+                object-position: center;
+              }'''.replace('              ', '      ')
+          new = '''      .nav {
+                min-height: 92px;
+                padding: 10px 16px 9px;
+                gap: 0;
+                justify-content: center;
+              }
+
+              .nav::after {
+                width: 8px;
+                height: 8px;
+                bottom: -5px;
+              }
+
+              .brand {
+                min-width: 0;
+                max-width: none;
+                flex: 1 1 100%;
+                justify-content: center;
+                overflow: visible;
+              }
+
+              .brand-logo {
+                width: min(326px, 88vw);
+                max-width: 100%;
+                object-position: center;
+              }'''.replace('              ', '      ')
+          if old not in s: raise SystemExit('mobile header source block changed')
+          s = s.replace(old, new, 1)
+
+          if '/assets/sls-lockup.png?v=20260829' not in s:
+            raise SystemExit('Expected official lockup reference missing')
+          s = s.replace('/assets/sls-lockup.png?v=20260829', '/assets/sls-lockup.png?v=20260829b', 1)
+
+          for needle in ['Attorney Execution Authority', 'New Castle County', 'Sussex County', 'michaelschwander@schwanderlegal.com', '#00415b', '#ead788']:
+            if needle not in s:
+              raise SystemExit(f'Required content missing after edit: {needle}')
+
+          p.write_text(s)
+          PY
+
+      - name: Validate
+        run: |
+          git diff --check
+          test "$(git diff --name-only | tr '\n' ' ')" = "index.html "
+          grep -q '/assets/sls-lockup.png?v=20260829b' index.html
+          grep -q '#00415b' index.html
+          grep -q '#ead788' index.html
+          grep -q 'Attorney Execution Authority' index.html
+
+      - name: Commit staged design
+        run: |
+          git config user.name "Schwander Legal Site Publisher"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git rm .github/workflows/header-flow-final.yml .github/workflows/header-flow-final-2.yml
+          git commit -m "Integrate SLS header into flowing Delaware palette"
+          git push origin fix/header-flow-final
