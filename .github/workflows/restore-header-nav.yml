@@ -18,23 +18,27 @@ jobs:
           ref: main
           fetch-depth: 0
 
-      - name: Restore nav styles and verify clean logo rules
+      - name: Restore base nav styles and verify clean logo rules
         run: |
           python - <<'PY'
           from pathlib import Path
           import re
           p = Path('index.html')
           s = p.read_text()
-          if not re.search(r'(?m)^\s*\.nav-links \{', s):
-              brand = re.search(r'(?ms)^\s*\.brand-logo \{.*?^\s*\}', s)
-              if not brand:
-                  raise SystemExit('brand-logo rule missing')
+          brand = re.search(r'(?ms)^\s*\.brand-logo \{.*?^\s*\}', s)
+          if not brand:
+              raise SystemExit('brand-logo rule missing')
+          after = s[brand.end():brand.end()+500]
+          if not re.search(r'(?m)^\s*\.nav-links \{', after):
               nav_css = "\n\n    .nav-links {\n      display: flex;\n      align-items: center;\n      gap: 28px;\n      font-size: 14px;\n      color: rgba(255, 255, 255, 0.94);\n      font-weight: 760;\n      flex: 0 0 auto;\n    }\n\n    .nav-links a:hover {\n      color: #f5d98c;\n    }"
               s = s[:brand.end()] + nav_css + s[brand.end():]
-          required = ['/assets/sls-lockup.png?v=20260829e','filter: none;','opacity: 1;','mix-blend-mode: normal;','box-shadow: none;','.nav-links {','.nav-links a:hover {','Request Rate Sheet']
+          segment = s[brand.end():brand.end()+700]
+          required = ['/assets/sls-lockup.png?v=20260829e','filter: none;','opacity: 1;','mix-blend-mode: normal;','box-shadow: none;','Request Rate Sheet']
           for needle in required:
               if needle not in s:
                   raise SystemExit(f'Missing required header condition: {needle}')
+          if '.nav-links {' not in segment or '.nav-links a:hover {' not in segment:
+              raise SystemExit('Base nav styling was not restored adjacent to brand logo')
           logo = re.search(r'(?ms)^\s*\.brand-logo \{.*?^\s*\}', s).group(0)
           if 'drop-shadow' in logo:
               raise SystemExit('Old logo drop-shadow survived')
