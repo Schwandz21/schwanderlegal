@@ -1,0 +1,73 @@
+name: One-time SLS branding cleanup
+
+on:
+  push:
+    branches: ['fix/live-branding-cleanup']
+    paths: ['.github/workflows/clean-branding.yml']
+
+permissions:
+  contents: write
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: fix/live-branding-cleanup
+          fetch-depth: 0
+
+      - name: Remove billboard branding and tighten header
+        shell: python
+        run: |
+          from pathlib import Path
+          p = Path('index.html')
+          s = p.read_text()
+
+          banner_css = '''\n\n    .hero-brand-banner {\n      position: relative; z-index: 2; max-width: var(--max);\n      margin: 0 auto; padding: 28px 22px 0;\n    }\n    .hero-brand-banner img {\n      display: block; width: 100%; height: auto; border-radius: 18px;\n      border: 1px solid rgba(255,255,255,.18);\n      box-shadow: 0 18px 42px rgba(27,42,60,.22);\n    }\n'''
+          if banner_css not in s:
+              raise SystemExit('Hero banner CSS not found; refusing partial edit')
+          s = s.replace(banner_css, '\n', 1)
+
+          banner_html = '''      <div class="hero-brand-banner" aria-label="Schwander Legal Services, P.A.">\n        <img src="assets/sls-banner.jpg" alt="Schwander Legal Services, P.A. — Delaware law firm" width="900" height="386" />\n      </div>\n'''
+          if banner_html not in s:
+              raise SystemExit('Hero banner HTML not found; refusing partial edit')
+          s = s.replace(banner_html, '', 1)
+
+          s = s.replace('''      min-height: 102px;\n      padding: 9px 22px;''', '''      min-height: 96px;\n      padding: 10px 22px;''', 1)
+          s = s.replace('''      box-shadow: 0 8px 28px rgba(2, 31, 67, 0.18);''', '''      box-shadow: 0 7px 24px rgba(2, 31, 67, 0.14);''', 1)
+          s = s.replace('''      border-bottom: 1px solid rgba(198, 160, 81, 0.72);''', '''      border-bottom: 1px solid rgba(198, 160, 81, 0.34);''', 1)
+          s = s.replace('''      max-height: 86px;''', '''      max-height: 80px;''', 1)
+          s = s.replace('''      font-weight: 700;\n    }\n\n    .nav-links a:hover''', '''      font-weight: 700;\n      flex: 0 0 auto;\n    }\n\n    .nav-links a:hover''', 1)
+          s = s.replace('''      font-size: 14px;\n      border: 1px solid transparent;''', '''      font-size: 14px;\n      white-space: nowrap;\n      border: 1px solid transparent;''', 1)
+          s = s.replace('''      padding: 92px 22px 84px;''', '''      padding: 78px 22px 84px;''', 1)
+
+          # Slightly calmer mobile header: keep the identity, lose the crowding.
+          s = s.replace('''        width: min(245px, 58vw);\n        max-height: 68px;''', '''        width: min(220px, 55vw);\n        max-height: 60px;''', 1)
+
+          # Safety checks: there must be exactly one visible logo image and no hero billboard.
+          assert 'hero-brand-banner' not in s
+          assert 'sls-banner.jpg' not in s
+          assert s.count('class="brand-logo"') == 1
+          assert 'Delaware Refinance Closing Coverage for Your Existing Files' in s
+          assert 'Approximately 600 Delaware residential refinance closings' in s
+
+          p.write_text(s)
+
+      - name: Validate
+        run: |
+          git diff --check
+          test "$(git diff --name-only | tr '\n' ' ')" = "index.html "
+          ! grep -q 'hero-brand-banner' index.html
+          ! grep -q 'sls-banner.jpg' index.html
+          test "$(grep -o 'class="brand-logo"' index.html | wc -l | tr -d ' ')" = "1"
+
+      - name: Commit cleanup
+        run: |
+          git config user.name "Schwander Legal Site Publisher"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git rm assets/sls-banner.jpg
+          git rm .github/workflows/clean-branding.yml
+          git commit -m "Fix SLS branding integration"
+          git push origin HEAD:fix/live-branding-cleanup
