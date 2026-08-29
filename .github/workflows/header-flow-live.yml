@@ -1,0 +1,279 @@
+name: Publish final integrated SLS header treatment
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - '.github/workflows/header-flow-live.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Apply integrated header and hero treatment
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path('index.html')
+          s = p.read_text()
+
+          # Delaware's official colors are colonial blue and buff; Delaware's
+          # current digital brand uses Pioneer Blue (#00415B) and Lighthouse
+          # Gold (#EAD788). Use those as the base while preserving the exact
+          # official SLS transparent lockup asset unchanged.
+          palette = {
+              '--gold: #c6a051;': '--gold: #ead788;',
+              '--gold-dark: #8a6e2f;': '--gold-dark: #8c7132;',
+              '--blue: #35699a;': '--blue: #0a5574;',
+              '--blue-deep: #275580;': '--blue-deep: #00415b;',
+              '--blue-light: #3d73a6;': '--blue-light: #2d6b86;',
+          }
+          for old, new in palette.items():
+              if old not in s:
+                  raise SystemExit(f'Expected palette source missing: {old}')
+              s = s.replace(old, new, 1)
+
+          def block(selector, replacement):
+              global s
+              pat = rf'    {re.escape(selector)} \{{.*?\n    \}}'
+              s2, n = re.subn(pat, replacement.rstrip(), s, count=1, flags=re.S)
+              if n != 1:
+                  raise SystemExit(f'Could not replace exactly one {selector} block; got {n}')
+              s = s2
+
+          block('.site-header', '''    .site-header {
+              position: sticky;
+              top: 0;
+              z-index: 20;
+              isolation: isolate;
+              background:
+                radial-gradient(circle at 18% -55%, rgba(234, 215, 136, 0.12), transparent 42%),
+                linear-gradient(118deg, #032f45 0%, #00415b 48%, #0a5574 100%);
+              border-bottom: 1px solid rgba(234, 215, 136, 0.52);
+              box-shadow: 0 10px 30px rgba(1, 41, 58, 0.20);
+            }'''.replace('            ', '    '))
+
+          # Add subtle depth without boxing the logo.
+          anchor = '    .nav {'
+          if anchor not in s:
+              raise SystemExit('nav anchor missing')
+          s = s.replace(anchor, '''    .site-header::before {
+              content: "";
+              position: absolute;
+              inset: 0;
+              z-index: -1;
+              pointer-events: none;
+              opacity: 0.34;
+              background:
+                linear-gradient(90deg, transparent 0%, rgba(255, 255, 255, 0.035) 38%, transparent 72%),
+                radial-gradient(circle at 78% 20%, rgba(255, 255, 255, 0.045), transparent 32%);
+            }
+
+            .nav {'''.replace('            ', '    '), 1)
+
+          block('.nav', '''    .nav {
+              position: relative;
+              max-width: 1280px;
+              margin: 0 auto;
+              min-height: 126px;
+              padding: 16px 28px 15px;
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              gap: 42px;
+            }'''.replace('            ', '    '))
+
+          # Elegant divider diamond ties header directly into hero.
+          anchor = '    .brand {'
+          if anchor not in s:
+              raise SystemExit('brand anchor missing')
+          s = s.replace(anchor, '''    .nav::after {
+              content: "";
+              position: absolute;
+              left: 50%;
+              bottom: -6px;
+              width: 10px;
+              height: 10px;
+              background: #00415b;
+              border: 1px solid rgba(234, 215, 136, 0.90);
+              transform: translateX(-50%) rotate(45deg);
+              box-shadow: 0 0 0 3px rgba(0, 65, 91, 0.92);
+            }
+
+            .brand {'''.replace('            ', '    '), 1)
+
+          block('.brand', '''    .brand {
+              display: flex;
+              align-items: center;
+              flex: 1 1 430px;
+              min-width: 330px;
+              max-width: 460px;
+            }'''.replace('            ', '    '))
+
+          block('.brand-logo', '''    .brand-logo {
+              display: block;
+              width: min(420px, 38vw);
+              max-width: 100%;
+              height: auto;
+              object-fit: contain;
+              object-position: left center;
+              filter: drop-shadow(0 5px 10px rgba(1, 32, 46, 0.28));
+            }'''.replace('            ', '    '))
+
+          block('.nav-links', '''    .nav-links {
+              display: flex;
+              align-items: center;
+              gap: 28px;
+              font-size: 14px;
+              color: rgba(255, 255, 255, 0.94);
+              font-weight: 760;
+              flex: 0 0 auto;
+            }'''.replace('            ', '    '))
+
+          block('.hero', '''    .hero {
+              position: relative;
+              overflow: hidden;
+              color: #ffffff;
+              background:
+                radial-gradient(circle at 80% 8%, rgba(234, 215, 136, 0.16), transparent 30%),
+                radial-gradient(circle at 12% 22%, rgba(255, 255, 255, 0.045), transparent 30%),
+                linear-gradient(145deg, #00415b 0%, #0a5574 50%, #2d6b86 100%);
+            }'''.replace('            ', '    '))
+
+          block('.hero-inner', '''    .hero-inner {
+              position: relative;
+              z-index: 1;
+              max-width: 1200px;
+              margin: 0 auto;
+              padding: 72px 28px 90px;
+              display: grid;
+              grid-template-columns: 1.15fr 0.85fr;
+              gap: 56px;
+              align-items: center;
+            }'''.replace('            ', '    '))
+
+          block('.hero-card', '''    .hero-card {
+              background: linear-gradient(145deg, rgba(255, 255, 255, 0.095), rgba(255, 255, 255, 0.055));
+              border: 1px solid rgba(234, 215, 136, 0.32);
+              box-shadow: 0 24px 58px rgba(0, 34, 48, 0.20);
+              border-radius: var(--radius);
+              padding: 31px;
+              backdrop-filter: blur(6px);
+            }'''.replace('            ', '    '))
+
+          # Later responsive overrides win over the older mobile header rules.
+          reduced = '    @media (prefers-reduced-motion: reduce) {'
+          if reduced not in s:
+              raise SystemExit('responsive anchor missing')
+          responsive = '''    @media (max-width: 1120px) and (min-width: 981px) {
+              .nav {
+                gap: 24px;
+                padding-left: 22px;
+                padding-right: 22px;
+              }
+
+              .brand {
+                flex-basis: 350px;
+                min-width: 290px;
+              }
+
+              .brand-logo {
+                width: min(360px, 33vw);
+              }
+
+              .nav-links {
+                gap: 18px;
+              }
+            }
+
+            @media (max-width: 720px) {
+              .nav {
+                min-height: 94px;
+                padding: 10px 16px 9px;
+                gap: 0;
+                justify-content: center;
+              }
+
+              .nav::after {
+                width: 8px;
+                height: 8px;
+                bottom: -5px;
+              }
+
+              .brand {
+                min-width: 0;
+                max-width: none;
+                flex: 1 1 100%;
+                justify-content: center;
+                overflow: visible;
+              }
+
+              .brand-logo {
+                width: min(326px, 88vw);
+                max-width: 100%;
+                height: auto;
+                object-position: center;
+              }
+
+              .hero-inner {
+                padding-top: 60px;
+              }
+            }
+
+          '''.replace('            ', '    ')
+          s = s.replace(reduced, responsive + reduced, 1)
+
+          if '/assets/sls-lockup.png?v=20260829' not in s:
+              raise SystemExit('Official lockup reference missing')
+          s = s.replace('/assets/sls-lockup.png?v=20260829', '/assets/sls-lockup.png?v=20260829c', 1)
+
+          # Content and structural guardrails.
+          required = [
+              'Delaware Refinance Closing Coverage for Your Existing Files',
+              'The backup resource your Delaware team can call.',
+              'Attorney support for prepared Delaware refinance files',
+              'Built for the companies that refer Delaware refinance files',
+              'Attorney Execution Authority',
+              'New Castle County',
+              'Sussex County',
+              'michaelschwander@schwanderlegal.com',
+              '/assets/sls-lockup.png?v=20260829c',
+              '#00415b',
+              '#ead788',
+          ]
+          for needle in required:
+              if needle not in s:
+                  raise SystemExit(f'Required content missing after visual edit: {needle}')
+
+          p.write_text(s)
+          PY
+
+      - name: Validate staged site
+        run: |
+          git diff --check
+          test "$(git diff --name-only | tr '\n' ' ')" = "index.html "
+          grep -q '/assets/sls-lockup.png?v=20260829c' index.html
+          grep -q '#00415b' index.html
+          grep -q '#ead788' index.html
+          grep -q 'Attorney Execution Authority' index.html
+
+      - name: Publish and remove temporary workflow
+        run: |
+          git config user.name "Schwander Legal Site Publisher"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git rm .github/workflows/header-flow-live.yml
+          git commit -m "Integrate SLS header into flowing Delaware palette"
+          git push origin main
