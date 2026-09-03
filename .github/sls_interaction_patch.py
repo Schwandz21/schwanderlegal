@@ -1,0 +1,526 @@
+from pathlib import Path
+
+path = Path('index.html')
+s = path.read_text()
+css_marker = 'SLS_INTERACTION_LAYER_V1'
+js_marker = 'SLS_INTERACTION_SCRIPT_V1'
+
+if css_marker in s or js_marker in s:
+    raise SystemExit('Interaction layer already present; refusing duplicate insertion.')
+
+css = r'''
+
+    /* SLS_INTERACTION_LAYER_V1 — restrained professional interaction pass */
+    html {
+      scroll-padding-top: 138px;
+    }
+
+    .site-header,
+    .card,
+    .process-step,
+    .review-item,
+    .county,
+    .trust-item,
+    .ideal-item,
+    .contact-box {
+      transition:
+        transform 240ms cubic-bezier(.2,.8,.2,1),
+        box-shadow 240ms ease,
+        border-color 240ms ease,
+        background-color 240ms ease,
+        opacity 240ms ease;
+    }
+
+    body.sls-scrolled .site-header {
+      background: rgba(0, 55, 76, 0.94);
+      backdrop-filter: blur(18px) saturate(125%);
+      -webkit-backdrop-filter: blur(18px) saturate(125%);
+      box-shadow: 0 12px 34px rgba(1, 41, 58, 0.28);
+    }
+
+    .nav-links a:not(.btn) {
+      position: relative;
+      padding: 10px 0;
+    }
+
+    .nav-links a:not(.btn)::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      right: 100%;
+      bottom: 3px;
+      height: 2px;
+      background: var(--gold);
+      transition: right 220ms ease;
+    }
+
+    .nav-links a:not(.btn):hover::after,
+    .nav-links a:not(.btn).sls-current::after {
+      right: 0;
+    }
+
+    .nav-links a.sls-current {
+      color: #f5d98c;
+    }
+
+    .sls-reveal {
+      opacity: 0;
+      transform: translateY(18px);
+    }
+
+    .sls-reveal.sls-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .card:hover,
+    .card:focus-within,
+    .review-item:hover,
+    .review-item:focus-visible,
+    .ideal-item:hover,
+    .county:hover,
+    .county:focus-visible {
+      transform: translateY(-5px);
+      border-color: rgba(140, 113, 50, 0.42);
+      box-shadow: 0 18px 38px rgba(39, 85, 128, 0.12);
+    }
+
+    .card .icon,
+    .process-step .card-number,
+    .check {
+      transition:
+        transform 220ms cubic-bezier(.2,.8,.2,1),
+        box-shadow 220ms ease,
+        background 220ms ease;
+    }
+
+    .card:hover .icon,
+    .card:focus-within .icon {
+      transform: translateY(-2px) scale(1.045);
+    }
+
+    .hero-card {
+      transition:
+        transform 320ms cubic-bezier(.2,.8,.2,1),
+        box-shadow 320ms ease,
+        border-color 320ms ease;
+    }
+
+    .hero-card:hover {
+      transform: translateY(-7px);
+      border-color: rgba(234, 215, 136, 0.56);
+      box-shadow: 0 30px 70px rgba(0, 34, 48, 0.27);
+    }
+
+    .trust-item {
+      position: relative;
+      overflow: hidden;
+    }
+
+    .trust-item::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      bottom: 0;
+      width: 0;
+      height: 2px;
+      background: linear-gradient(90deg, var(--gold-dark), var(--gold));
+      transition: width 300ms ease;
+    }
+
+    .trust-item:hover::after {
+      width: 100%;
+    }
+
+    [data-sls-counter] {
+      display: inline-block;
+      min-width: 2.1ch;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .process-five {
+      position: relative;
+    }
+
+    .process-step {
+      cursor: pointer;
+      overflow: hidden;
+      outline: none;
+    }
+
+    .process-step::after {
+      content: "";
+      position: absolute;
+      inset: auto 0 0;
+      height: 3px;
+      transform: scaleX(0);
+      transform-origin: left center;
+      background: linear-gradient(90deg, var(--gold-dark), var(--gold));
+      transition: transform 260ms ease;
+    }
+
+    .process-step.is-active,
+    .process-step:hover,
+    .process-step:focus-visible {
+      transform: translateY(-7px);
+      border-color: rgba(140, 113, 50, 0.46);
+      box-shadow: 0 20px 42px rgba(39, 85, 128, 0.13);
+    }
+
+    .process-step.is-active::after,
+    .process-step:hover::after,
+    .process-step:focus-visible::after {
+      transform: scaleX(1);
+    }
+
+    .process-step.is-active .card-number,
+    .process-step:hover .card-number,
+    .process-step:focus-visible .card-number {
+      transform: scale(1.08);
+      background: var(--blue-deep);
+      box-shadow: 0 8px 20px rgba(0, 65, 91, 0.22);
+    }
+
+    .review-item,
+    .county {
+      outline: none;
+    }
+
+    .review-item strong::after {
+      content: "  +";
+      color: var(--gold-dark);
+      opacity: 0;
+      transition: opacity 180ms ease;
+    }
+
+    .review-item:hover strong::after,
+    .review-item:focus-visible strong::after {
+      opacity: 1;
+    }
+
+    .county.is-active {
+      transform: translateY(-4px);
+      border-color: rgba(140, 113, 50, 0.48);
+      box-shadow: 0 14px 32px rgba(39, 85, 128, 0.11);
+      background: #ffffff;
+    }
+
+    .coverage-status {
+      margin-top: 13px;
+      min-height: 46px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      border: 1px solid rgba(140, 113, 50, 0.24);
+      background: rgba(245, 238, 220, 0.62);
+      color: var(--ink-2);
+      font-size: 13px;
+      font-weight: 760;
+    }
+
+    .sls-quick-actions {
+      position: fixed;
+      right: 22px;
+      bottom: 22px;
+      z-index: 40;
+      display: flex;
+      gap: 9px;
+      padding: 7px;
+      border: 1px solid rgba(234, 215, 136, 0.42);
+      border-radius: 999px;
+      background: rgba(0, 55, 76, 0.94);
+      box-shadow: 0 18px 48px rgba(1, 41, 58, 0.28);
+      backdrop-filter: blur(14px);
+      -webkit-backdrop-filter: blur(14px);
+      transform: translateY(90px);
+      opacity: 0;
+      transition: transform 280ms cubic-bezier(.2,.8,.2,1), opacity 220ms ease;
+    }
+
+    body.sls-scrolled .sls-quick-actions {
+      transform: translateY(0);
+      opacity: 1;
+    }
+
+    .sls-quick-actions a {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 39px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.015em;
+      color: #ffffff;
+      transition: transform 180ms ease, background 180ms ease, color 180ms ease;
+    }
+
+    .sls-quick-actions a:first-child {
+      background: var(--gold);
+      color: var(--ink);
+    }
+
+    .sls-quick-actions a:hover,
+    .sls-quick-actions a:focus-visible {
+      transform: translateY(-2px);
+    }
+
+    @media (max-width: 720px) {
+      body {
+        padding-bottom: 68px;
+      }
+
+      .sls-quick-actions {
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        justify-content: stretch;
+        border-radius: 16px;
+      }
+
+      .sls-quick-actions a {
+        flex: 1 1 50%;
+        padding-left: 10px;
+        padding-right: 10px;
+      }
+
+      .review-item {
+        cursor: pointer;
+      }
+
+      .review-item span {
+        display: block;
+        max-height: 0;
+        overflow: hidden;
+        opacity: 0;
+        margin-top: 0;
+        transition: max-height 260ms ease, opacity 220ms ease, margin-top 220ms ease;
+      }
+
+      .review-item strong::after {
+        content: "  +";
+        opacity: 1;
+      }
+
+      .review-item.is-open span {
+        max-height: 180px;
+        opacity: 1;
+        margin-top: 7px;
+      }
+
+      .review-item.is-open strong::after {
+        content: "  −";
+      }
+
+      .process-step.is-active,
+      .process-step:hover,
+      .process-step:focus-visible,
+      .card:hover,
+      .review-item:hover,
+      .county:hover {
+        transform: translateY(-3px);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .sls-reveal {
+        opacity: 1 !important;
+        transform: none !important;
+      }
+
+      .sls-quick-actions {
+        transition: none !important;
+      }
+    }
+'''
+
+js = r'''
+
+  <script>
+    /* SLS_INTERACTION_SCRIPT_V1 */
+    (() => {
+      const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      const body = document.body;
+
+      const syncScrollState = () => {
+        body.classList.toggle('sls-scrolled', window.scrollY > 28);
+      };
+      syncScrollState();
+      window.addEventListener('scroll', syncScrollState, { passive: true });
+
+      const revealNodes = Array.from(document.querySelectorAll(
+        '.section-heading, .card, .process-step, .review-item, .county, .trust-item, .ideal-item, .coverage-map, .contact > div'
+      ));
+
+      if (!reduceMotion && 'IntersectionObserver' in window) {
+        revealNodes.forEach((node, index) => {
+          node.classList.add('sls-reveal');
+          node.style.transitionDelay = `${Math.min(index % 4, 3) * 55}ms`;
+        });
+        const revealObserver = new IntersectionObserver((entries, observer) => {
+          entries.forEach((entry) => {
+            if (!entry.isIntersecting) return;
+            entry.target.classList.add('sls-visible');
+            observer.unobserve(entry.target);
+          });
+        }, { threshold: 0.13, rootMargin: '0px 0px -7% 0px' });
+        revealNodes.forEach((node) => revealObserver.observe(node));
+      } else {
+        revealNodes.forEach((node) => node.classList.add('sls-visible'));
+      }
+
+      const navLinks = Array.from(document.querySelectorAll('.nav-links a[href^="#"]'));
+      const navTargets = navLinks
+        .map((link) => ({ link, section: document.querySelector(link.getAttribute('href')) }))
+        .filter((item) => item.section);
+
+      if ('IntersectionObserver' in window && navTargets.length) {
+        const navObserver = new IntersectionObserver((entries) => {
+          const visible = entries
+            .filter((entry) => entry.isIntersecting)
+            .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
+          if (!visible) return;
+          navLinks.forEach((link) => link.classList.remove('sls-current'));
+          const current = navTargets.find((item) => item.section === visible.target);
+          if (current) current.link.classList.add('sls-current');
+        }, { threshold: [0.2, 0.45, 0.7], rootMargin: '-24% 0px -54% 0px' });
+        navTargets.forEach((item) => navObserver.observe(item.section));
+      }
+
+      const processSteps = Array.from(document.querySelectorAll('.process-step'));
+      const setProcessStep = (index) => {
+        processSteps.forEach((step, i) => {
+          step.classList.toggle('is-active', i === index);
+          step.setAttribute('aria-current', i === index ? 'step' : 'false');
+        });
+      };
+      processSteps.forEach((step, index) => {
+        step.tabIndex = 0;
+        step.addEventListener('click', () => setProcessStep(index));
+        step.addEventListener('focus', () => setProcessStep(index));
+        step.addEventListener('keydown', (event) => {
+          if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
+          event.preventDefault();
+          const direction = event.key === 'ArrowRight' ? 1 : -1;
+          const next = (index + direction + processSteps.length) % processSteps.length;
+          processSteps[next].focus();
+          setProcessStep(next);
+        });
+      });
+      if (processSteps.length) setProcessStep(0);
+
+      const countyList = document.querySelector('.county-list');
+      const counties = Array.from(document.querySelectorAll('.county'));
+      if (countyList && counties.length) {
+        const status = document.createElement('div');
+        status.className = 'coverage-status';
+        status.setAttribute('aria-live', 'polite');
+        countyList.insertAdjacentElement('afterend', status);
+
+        const activateCounty = (county) => {
+          counties.forEach((item) => item.classList.toggle('is-active', item === county));
+          const name = county.querySelector('span:first-child')?.textContent.trim() || 'Delaware';
+          const badge = county.querySelector('.badge')?.textContent.trim() || 'Coverage available';
+          status.textContent = `${name} · ${badge} · Mobile signing locations confirmed in advance.`;
+        };
+
+        counties.forEach((county) => {
+          county.tabIndex = 0;
+          county.addEventListener('click', () => activateCounty(county));
+          county.addEventListener('focus', () => activateCounty(county));
+          county.addEventListener('keydown', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') {
+              event.preventDefault();
+              activateCounty(county);
+            }
+          });
+        });
+        activateCounty(counties[0]);
+      }
+
+      const reviewItems = Array.from(document.querySelectorAll('.review-item'));
+      reviewItems.forEach((item, index) => {
+        item.tabIndex = 0;
+        item.setAttribute('aria-expanded', 'false');
+        const toggle = () => {
+          if (!window.matchMedia('(max-width: 720px)').matches) return;
+          const opening = !item.classList.contains('is-open');
+          reviewItems.forEach((other) => {
+            other.classList.remove('is-open');
+            other.setAttribute('aria-expanded', 'false');
+          });
+          if (opening) {
+            item.classList.add('is-open');
+            item.setAttribute('aria-expanded', 'true');
+          }
+        };
+        item.addEventListener('click', toggle);
+        item.addEventListener('keydown', (event) => {
+          if (event.key === 'Enter' || event.key === ' ') {
+            event.preventDefault();
+            toggle();
+          }
+        });
+        if (index === 0 && window.matchMedia('(max-width: 720px)').matches) {
+          item.classList.add('is-open');
+          item.setAttribute('aria-expanded', 'true');
+        }
+      });
+
+      const closingCount = Array.from(document.querySelectorAll('.trust-item strong'))
+        .find((node) => /Approximately\s+600/.test(node.textContent));
+      if (closingCount) {
+        closingCount.innerHTML = closingCount.innerHTML.replace('600', '<span data-sls-counter="600">0</span>');
+        const counter = closingCount.querySelector('[data-sls-counter]');
+        const finishCounter = () => { counter.textContent = '600'; };
+        if (reduceMotion || !('IntersectionObserver' in window)) {
+          finishCounter();
+        } else {
+          const counterObserver = new IntersectionObserver((entries, observer) => {
+            if (!entries.some((entry) => entry.isIntersecting)) return;
+            const start = performance.now();
+            const duration = 850;
+            const tick = (now) => {
+              const progress = Math.min((now - start) / duration, 1);
+              const eased = 1 - Math.pow(1 - progress, 3);
+              counter.textContent = Math.round(600 * eased).toString();
+              if (progress < 1) requestAnimationFrame(tick);
+            };
+            requestAnimationFrame(tick);
+            observer.disconnect();
+          }, { threshold: 0.65 });
+          counterObserver.observe(closingCount.closest('.trust-item'));
+        }
+      }
+
+      const quickActions = document.createElement('nav');
+      quickActions.className = 'sls-quick-actions';
+      quickActions.setAttribute('aria-label', 'Quick actions');
+      quickActions.innerHTML = `
+        <a href="mailto:michaelschwander@schwanderlegal.com?subject=Delaware%20Closing%20Coverage%20Request">Request Coverage</a>
+        <a href="mailto:michaelschwander@schwanderlegal.com?subject=Vendor%20Onboarding%20Materials%20Request">Vendor Onboarding</a>
+      `;
+      body.appendChild(quickActions);
+    })();
+  </script>
+'''
+
+style_anchor = '  </style>\n</head>'
+body_anchor = '</body>'
+if style_anchor not in s or body_anchor not in s:
+    raise SystemExit('Expected HTML anchors not found; refusing partial edit.')
+
+s = s.replace(style_anchor, css + '\n  </style>\n</head>', 1)
+s = s.replace(body_anchor, js + '\n</body>', 1)
+
+assert s.count(css_marker) == 1
+assert s.count(js_marker) == 1
+assert s.count('</html>') == 1
+assert s.count('</body>') == 1
+assert s.count('</style>') == 1
+assert 'Request Closing Coverage' in s
+assert 'Start Vendor Onboarding' in s
+assert 'Delaware Closing Coverage for Your Existing Files' in s
+assert '/assets/sls-lockup.png?v=20260829e' in s
+
+path.write_text(s)
