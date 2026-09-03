@@ -1,0 +1,40 @@
+name: Run SLS interaction patch
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/sls-interaction-pass-v2.yml'
+
+permissions:
+  contents: write
+
+jobs:
+  enhance:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0
+
+      - name: Apply interaction layer
+        run: python .github/sls_interaction_patch.py
+
+      - name: Validate
+        run: |
+          git diff --check
+          test "$(git diff --name-only | tr '\n' ' ')" = "index.html "
+          grep -q 'SLS_INTERACTION_LAYER_V1' index.html
+          grep -q 'SLS_INTERACTION_SCRIPT_V1' index.html
+          grep -q 'Delaware Closing Coverage for Your Existing Files' index.html
+
+      - name: Commit and clean up
+        run: |
+          git config user.name "Schwander Legal Site Publisher"
+          git config user.email "actions@users.noreply.github.com"
+          git add index.html
+          git rm .github/sls_interaction_patch.py .github/workflows/sls-interaction-pass-v2.yml
+          git commit -m "Add restrained interactive experience to SLS site"
+          git push origin main
